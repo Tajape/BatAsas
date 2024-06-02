@@ -1,0 +1,117 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #70c5ce;
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: url('img/fundo.jpg') repeat-x;
+  background-size: cover;
+}
+
+#morcego {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: url('img/morcego.gif') no-repeat center center;
+  background-size: cover;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.pipe {
+  position: absolute;
+  width: 60px;
+  height: 300px;
+  background:
+  linear-gradient(45deg, #aad8e6 25%, #a0c9de 25%, #a0c9de 75%, #aad8e6 75%, #aad8e6),
+  linear-gradient(to bottom, #aad8e6 50%, #a0c9de 50%);
+  background-size: 20px 20px, 100% 100%;
+  bottom: 0;
+  animation: movePipe 4s linear infinite;
+  z-index: 5;
+  border-radius: 20px;
+  border: 2px solid grey;
+}
+
+.pipe.top {
+  bottom: auto;
+  top: 0;
+}
+
+.pipe.paused {
+  animation-play-state: paused;
+}
+
+#score {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  font-size: 24px;
+  color: white;
+  font-family: Arial, sans-serif;
+  z-index: 15;
+}
+
+#score.pulse {
+  transform: translateX(-50%) scale(1.5);
+  transition: transform 0.2s;
+}
+
+@keyframes movePipe {
+  from {
+      left: 100%;
+  }
+  to {
+      left: -60px;
+  }
+}
+
+#initial-screen,
+#death-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  z-index: 20;
+}
+
+#death-screen {
+  display: none;
+}
+
+#initial-screen img {
+  width: 1000px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+#initial-screen p {
+  animation: blink 1s infinite;
+}

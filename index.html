@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bat-Asas, Morcego!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game">
+        <div id="morcego"></div>
+        <div id="score">0</div>
+        <div id="initial-screen">
+            <img src= "img/logo_batasas.png" alt="LOGO DO BAT ASAS">
+            <p>Pressione "Espaço" para começar</p>
+        </div>
+        <div id="death-screen">
+            <h1>Vish, se lascou😞</h1>
+            <h2>Sua pontuação: <span id="final-score"></span></h2>
+            <p>Pressione "Espaço" para reiniciar</p>
+        </div>
+    </div>
+
+    <!-- Músicas do jogo -->
+    <audio id="background-music" loop>
+        <source src="audio/Alice - Snow (from Super Chicken Jumper OST) (320).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="jump-music">
+        <source src="audio/pulo.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="end-music">
+        <source src="audio/jevil_byebye.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
