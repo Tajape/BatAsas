@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bat-Asas, Morcego!</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> <!-- Liga este documento HTML com o arquivo de estilo CSS -->
 </head>
 <body>
+    <!-- Contém todos os elementos do jogo -->
     <div id="game">
+        <!-- Representa o morcego -->
         <div id="morcego"></div>
+        
+        <!-- Exibe a pontuação atual -->
         <div id="score">0</div>
+
+        <!--Exibe o recorde de pontuações do jogador-->
+        <div id="record">Recorde: 0</div>
+        
+        <!-- Exibida quando o jogo é inicializado -->
         <div id="initial-screen">
-            <img src= "img/logo_batasas.png" alt="LOGO DO BAT ASAS">
-            <p>Pressione "Espaço" para começar</p>
+            <img src= "img/logo_bat_asas.png" alt="LOGO DO BAT ASAS">
+        <!-- Exibe o recorde no ecrã inicial -->
+        <p id="initial-record"></p>
+        <!-- Posição alterada -->
+        <p>Pressione "Espaço" para começar</p>
         </div>
+
+        <!-- Exibida quando o morcego é atingido -->
         <div id="death-screen">
             <h1>Vish, se lascou😞</h1>
             <h2>Sua pontuação: <span id="final-score"></span></h2>
@@ -24,17 +38,17 @@
     <!-- Músicas do jogo -->
     <audio id="background-music" loop>
         <source src="audio/Alice - Snow (from Super Chicken Jumper OST) (320).mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    </audio> <!--musica de fundo-->
+
     <audio id="jump-music">
         <source src="audio/pulo.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    </audio> <!--som de pulo-->
+
     <audio id="end-music">
         <source src="audio/jevil_byebye.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    </audio> <!--som de morte-->
 
+    <!-- Script que contém a lógica do jogo -->
     <script src="script.js"></script>
 </body>
 </html>

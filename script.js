@@ -1,6 +1,6 @@
-let morcego, game, scoreDisplay, initialScreen, deathScreen, finalScore;
-let backgroundMusic, jumpMusic, endMusic; // Variáveis para as músicas do jogo
-let morcegoY, gameInterval, pipeInterval, score, backgroundPositionX, gameOver, gameStarted;
+let morcego, game, scoreDisplay, initialScreen, deathScreen, finalScore, recordDisplay, initialScreenRecord;
+let backgroundMusic, jumpMusic, endMusic;
+let morcegoY, gameInterval, pipeInterval, score, backgroundPositionX, gameOver, gameStarted, record;
 const gravity = 0.3;
 const lift = -8;
 let velocity = 0;
@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initialScreen = document.getElementById('initial-screen');
     deathScreen = document.getElementById('death-screen');
     finalScore = document.getElementById('final-score');
+    recordDisplay = document.getElementById('record');
+    initialScreenRecord = document.getElementById('initial-record');
 
     backgroundMusic = document.getElementById('background-music');
     jumpMusic = document.getElementById('jump-music');
@@ -26,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     backgroundPositionX = 0;
     gameOver = false;
     gameStarted = false;
+
+    record = localStorage.getItem('record') || 0;
+    recordDisplay.textContent = "Recorde: " + record;
+    initialScreenRecord.textContent = "Recorde: " + record;
 
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space') {
@@ -45,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function startGame() {
     gameInterval = setInterval(gameLoop, 20);
     pipeInterval = setInterval(createPipe, 2500);
-    backgroundMusic.play(); // Iniciando a música de fundo
+    backgroundMusic.play();
 }
 
 function gameLoop() {
@@ -57,34 +63,39 @@ function gameLoop() {
 
     if (morcegoY > window.innerHeight || morcegoY < 0) endGame();
 
+    let hitboxBuffer = 10;
     let pipes = document.querySelectorAll('.pipe');
     pipes.forEach(pipe => {
         let pipeRect = pipe.getBoundingClientRect();
         let morcegoRect = morcego.getBoundingClientRect();
         let buffer = 5;
-
         if (
-            morcegoRect.right - buffer > pipeRect.left &&
-            morcegoRect.left + buffer < pipeRect.right &&
-            ((morcegoRect.bottom - buffer > pipeRect.top && pipe.classList.contains('bottom')) ||
-             (morcegoRect.top + buffer < pipeRect.bottom && pipe.classList.contains('top')))
-        ) { endGame(); }
+            morcegoRect.right - buffer - hitboxBuffer > pipeRect.left &&
+            morcegoRect.left + buffer + hitboxBuffer < pipeRect.right &&
+            ((morcegoRect.bottom - buffer - hitboxBuffer > pipeRect.top && pipe.classList.contains('bottom')) ||
+            (morcegoRect.top + buffer + hitboxBuffer < pipeRect.bottom && pipe.classList.contains('top')))
+        ) {
+            endGame();
+        }
 
         if (!pipe.passed && morcegoRect.right - buffer > pipeRect.right) {
             pipe.passed = true;
             if (pipe.classList.contains('top')) {
                 score++;
                 scoreDisplay.textContent = score;
-                scoreDisplay.classList.add('pulse');
-
-                setTimeout(() => {
-                    scoreDisplay.classList.remove('pulse');
-                }, 500);
+                scoreDisplay.classList.remove('deflate');
+                scoreDisplay.classList.add('deflate');
             }
         }
 
-        if (pipeRect.right < 0) { pipe.remove(); }
+        if (pipeRect.right < 0) {
+            pipe.remove();
+        }
     });
+
+    scoreDisplay.onanimationend = () => {
+        scoreDisplay.classList.remove('deflate');
+    };
 
     backgroundPositionX -= 2;
     game.style.backgroundPositionX = backgroundPositionX + 'px';
@@ -119,19 +130,24 @@ function createPipe() {
 function fly() {
     if (gameOver) return;
     velocity = lift;
-    jumpMusic.play();  // Reproduz a música de pulo
+    jumpMusic.play();
 }
 
 function endGame() {
     gameOver = true;
     clearInterval(gameInterval);
     clearInterval(pipeInterval);
+    if (score > record) {
+        record = score;
+        localStorage.setItem('record', record);
+        recordDisplay.textContent = "Recorde: " + record;
+        initialScreenRecord.textContent = "Recorde: " + record;
+    }
     finalScore.textContent = score;
     deathScreen.style.display = 'flex';
-    backgroundMusic.pause();  // Pausa a música de fundo
-    backgroundMusic.currentTime = 0;  // Reinicia a música de fundo
-    endMusic.play();  // Reproduz a música do final do jogo
-
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
+    endMusic.play();
     let pipes = document.querySelectorAll('.pipe');
     pipes.forEach(pipe => {
         pipe.classList.add('paused');

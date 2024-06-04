@@ -1,12 +1,24 @@
-body {
-  margin: 0;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #70c5ce;
+@font-face {
+  font-family: 'Alagard'; /* Define um nome para a fonte */
+  src: url('font/alagard.ttf') format('opentype'); /* Caminho para a fonte */
 }
+
+@font-face {
+  font-family: '8-bit Arcade In'; 
+  src: url('font/8-bit\ Arcade\ In.ttf') format('opentype'); 
+  }
+
+body {
+/* Define as configurações padrão para o corpo do documento */
+margin: 0;
+overflow: hidden;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background: #70c5ce;
+}
+
 
 #game {
   position: relative;
@@ -27,6 +39,7 @@ body {
   left: 20%;
   transform: translate(-50%, -50%);
   z-index: 10;
+  filter: drop-shadow(0px 0px 5px #cecece);
 }
 
 .pipe {
@@ -57,15 +70,21 @@ body {
   position: absolute;
   top: 20px;
   left: 50%;
+  transform: translateX(-50%);
   font-size: 24px;
-  color: white;
-  font-family: Arial, sans-serif;
+  color: #FDDC00;
+  font-family: 'Alagard', Arial, sans-serif;;
   z-index: 15;
+  text-shadow: 2px 2px 7px #494949;
 }
 
-#score.pulse {
-  transform: translateX(-50%) scale(1.5);
-  transition: transform 0.2s;
+@keyframes deflate {
+    0% { transform: translate(-50%) scale(1.5); }
+    100% { transform: translate(-50%) scale(1); }
+}
+
+#score.deflate {
+    animation: deflate 0.2s forwards;
 }
 
 @keyframes movePipe {
@@ -91,9 +110,10 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: 'alagard', Arial, sans-serif;;
   font-size: 24px;
   z-index: 20;
+  text-shadow: 2px 2px 7px #000000;
 }
 
 #death-screen {
@@ -101,9 +121,10 @@ body {
 }
 
 #initial-screen img {
-  width: 1000px;
+  width: 700px;
   height: auto;
   margin-bottom: 20px;
+  position: relative;
 }
 
 @keyframes blink {
@@ -114,4 +135,38 @@ body {
 
 #initial-screen p {
   animation: blink 1s infinite;
+}
+
+#death-screen h2 {
+  color: #FDDC00; 
+  margin-top: 10px;
+}
+
+#death-screen p {
+  animation: blink 1s infinite;
+}
+
+#record {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #FDDC00;
+  font-family: 'Alagard', Arial, sans-serif;
+  z-index: 15;
+  text-shadow: 2px 2px 7px #494949;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#initial-record {
+  font-size: 24px;
+  color: #FDDC00;
+  font-family: 'Alagard', Arial, sans-serif;
+  z-index: 15;
+  text-shadow: 2px 2px 7px #494949;
+  font-size: 3rem; /* escolha o tamanho que você deseja */
+  animation: none !important; /* isto irá impedir o piscar */
+  margin-top: -30px;
 }
