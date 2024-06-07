@@ -1,9 +1,11 @@
 let morcego, game, scoreDisplay, initialScreen, deathScreen, finalScore, recordDisplay, initialScreenRecord;
 let backgroundMusic, jumpMusic, endMusic;
 let morcegoY, gameInterval, pipeInterval, score, backgroundPositionX, gameOver, gameStarted, record;
+let laserEnabled = false;
 const gravity = 0.3;
 const lift = -8;
 let velocity = 0;
+let inputBuffer = '';
 
 document.addEventListener('DOMContentLoaded', () => {
     morcego = document.getElementById('morcego');
@@ -44,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 fly();
             }
+        } else if (laserEnabled && e.code === 'KeyL') {
+            shootLaser();
+        } else {
+            handleCodeInput(e.key);
         }
     });
 });
@@ -152,4 +158,53 @@ function endGame() {
     pipes.forEach(pipe => {
         pipe.classList.add('paused');
     });
+}
+
+function shootLaser() {
+    const laser = document.getElementById('laser');
+    laser.style.top = morcego.getBoundingClientRect().top + morcego.offsetHeight / 2 - laser.offsetHeight / 2 + 'px';
+    laser.style.left = morcego.getBoundingClientRect().left + morcego.offsetWidth + 'px';
+    laser.classList.add('active');
+
+    // Verifica colisão com os obstáculos
+    const laserMoveInterval = setInterval(() => {
+        const laserRect = laser.getBoundingClientRect();
+        const pipes = document.querySelectorAll('.pipe');
+        pipes.forEach(pipe => {
+            const pipeRect = pipe.getBoundingClientRect();
+            if (
+                laserRect.right > pipeRect.left &&
+                laserRect.left < pipeRect.right &&
+                laserRect.bottom > pipeRect.top &&
+                laserRect.top < pipeRect.bottom
+            ) {
+                pipe.remove();
+                laser.classList.remove('active');
+                clearInterval(laserMoveInterval);
+            }
+        });
+
+        if (laserRect.left > window.innerWidth) {
+            laser.classList.remove('active');
+            clearInterval(laserMoveInterval);
+        }
+    }, 20);
+
+    // Remove a classe 'active' após a animação terminar
+    laser.onanimationend = () => {
+        laser.classList.remove('active');
+    };
+}
+
+function handleCodeInput(key) {
+    inputBuffer += key.toLowerCase();
+    if (inputBuffer.includes('laser')) {
+        enableLaser();
+        inputBuffer = ''; // Limpa o buffer após ativar o laser
+    }
+}
+
+function enableLaser() {
+    laserEnabled = true;
+    alert('Laser habilitado!');
 }
