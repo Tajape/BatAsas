@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     jumpMusic = document.getElementById('jump-music');
     endMusic = document.getElementById('end-music');
 
-    backgroundMusic.volume = 0.5;
+    backgroundMusic.volume = 0.9;
 
     morcegoY = window.innerHeight / 2;
     gameInterval;
